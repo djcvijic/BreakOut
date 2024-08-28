@@ -1,4 +1,6 @@
+using Messages;
 using UnityEngine;
+using Util;
 using Random = System.Random;
 
 public class Ball : MonoBehaviour
@@ -57,10 +59,16 @@ public class Ball : MonoBehaviour
             velocity = new Vector3(-_currentVelocity.x, _currentVelocity.y, _currentVelocity.z);
         }
 
-        if (position.y < minY && _currentVelocity.y < 0 || position.y > maxY && _currentVelocity.y > 0)
+        if (position.y > maxY && _currentVelocity.y > 0)
         {
             position = new Vector3(position.x, Mathf.Clamp(position.y, minY, maxY), position.z);
             velocity = new Vector3(_currentVelocity.x, -_currentVelocity.y, _currentVelocity.z);
+        }
+
+        if (position.y < minY && _currentVelocity.y < 0)
+        {
+            Destroy(gameObject);
+            Notifier.Instance.Notify(new BallDestroyedMessage());
         }
 
         return (position, velocity);
