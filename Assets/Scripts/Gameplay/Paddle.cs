@@ -42,7 +42,7 @@ public class Paddle : MonoBehaviour
         var boundsTransform = GameBounds.Instance.BoundsTransform;
         var boundsPosition = boundsTransform.position;
         var boundsScale = boundsTransform.lossyScale;
-        var myScale = transform.lossyScale;
+        var myScale = spriteRenderer.transform.lossyScale;
         var minX = boundsPosition.x - 0.5f * (boundsScale.x - myScale.x);
         var maxX = boundsPosition.x + 0.5f * (boundsScale.x - myScale.x);
         return position.x < minX || position.x > maxX
