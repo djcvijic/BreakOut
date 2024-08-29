@@ -19,7 +19,11 @@ public class Ball : MonoBehaviour
     public void UnAttach()
     {
         _attached = false;
+        SetRandomAngle();
+    }
 
+    private void SetRandomAngle()
+    {
         var random = new Random();
         var randomAngle = Mathf.PI/2 * (0.5f + (float)random.NextDouble());
         randomAngle += randomAngle > Mathf.PI/2 ? Mathf.PI/12 : -Mathf.PI/12;
@@ -72,5 +76,17 @@ public class Ball : MonoBehaviour
         }
 
         return (position, velocity);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        var paddle = other.GetComponentInParent<Paddle>();
+        if (paddle != null)
+        {
+            if (_currentVelocity.y > 0) return;
+            
+            SetRandomAngle();
+            return;
+        }
     }
 }
