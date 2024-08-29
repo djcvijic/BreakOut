@@ -33,6 +33,8 @@ public class Ball : MonoBehaviour
 
     private void Update()
     {
+        if (GameController.Instance.CurrentState != GameController.State.Playing) return;
+
         Move();
     }
 
@@ -71,7 +73,7 @@ public class Ball : MonoBehaviour
 
         if (position.y < minY && _currentVelocity.y < 0)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
             Notifier.Instance.Notify(new BallDestroyedMessage());
         }
 
@@ -80,6 +82,8 @@ public class Ball : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (GameController.Instance.CurrentState != GameController.State.Playing) return;
+
         var paddle = other.GetComponentInParent<Paddle>();
         if (paddle != null)
         {
