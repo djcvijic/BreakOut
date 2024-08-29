@@ -4,14 +4,16 @@ public class Paddle : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private float moveSpeed = 1f;
-    [SerializeField] private Ball attachedBall;
 
-    private Vector3 attachedBallOffset;
+    private Vector3? _attachedBallOffset;
+    private Ball _attachedBall;
 
-    private void Awake()
+    public void Attach(Ball ball)
     {
-        attachedBall.Attach();
-        attachedBallOffset = attachedBall.transform.position - transform.position;
+        _attachedBall = ball;
+        _attachedBall.Attach();
+        _attachedBallOffset ??= _attachedBall.transform.position - transform.position;
+        MoveAttachedBall();
     }
 
     private void Update()
@@ -25,10 +27,10 @@ public class Paddle : MonoBehaviour
 
     private void Fire()
     {
-        if (!PlayerInputHandler.Instance.PrimaryAction || attachedBall == null) return;
+        if (!PlayerInputHandler.Instance.PrimaryAction || _attachedBall == null) return;
 
-        attachedBall.UnAttach();
-        attachedBall = null;
+        _attachedBall.UnAttach();
+        _attachedBall = null;
     }
 
     private void Move()
@@ -54,8 +56,8 @@ public class Paddle : MonoBehaviour
 
     private void MoveAttachedBall()
     {
-        if (attachedBall == null) return;
+        if (_attachedBall == null) return;
 
-        attachedBall.transform.position = transform.position + attachedBallOffset;
+        _attachedBall.transform.position = transform.position + _attachedBallOffset.Value;
     }
 }

@@ -4,11 +4,16 @@ using Util;
 
 public class GameController : MonoSingleton<GameController>
 {
+    [SerializeField] private int maxLives = 3;
+
     public enum State
     {
         Playing,
         GameOver
     }
+
+    private Paddle _paddle;
+    private int _currentLives;
 
     public State CurrentState { get; private set; } = State.Playing;
 
@@ -22,17 +27,50 @@ public class GameController : MonoSingleton<GameController>
         Notifier.Instance.Unsubscribe<BallDestroyedMessage>(OnBallDestroyed);
     }
 
-    private void OnBallDestroyed(BallDestroyedMessage message)
+    protected override void OnAwake()
     {
-        CheckGameOver();
+        base.OnAwake();
+
+        _paddle = FindAnyObjectByType<Paddle>(FindObjectsInactive.Exclude);
+        StartGame();
     }
 
-    private void CheckGameOver()
+    private void StartGame()
     {
-        var activeBalls = FindObjectsByType<Ball>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
-        if (activeBalls.Length == 0)
+        _currentLives = maxLives;
+        Attach();
+    }
+
+    private void Attach()
+    {
+        var ball = FindAnyObjectByType<Ball>(FindObjectsInactive.Include);
+        ball.gameObject.SetActive(true);
+        _paddle.Attach(ball);
+    }
+
+    private void OnBallDestroyed(BallDestroyedMessage message)
+    {
+        CheckLoseLife();
+    }
+
+    private void CheckLoseLife()
+    {
+        var anyBall = FindAnyObjectByType<Ball>(FindObjectsInactive.Exclude);
+        if (anyBall != null) return;
+
+        _currentLives -= 1;
+        GameOverOrReattach();
+    }
+
+    private void GameOverOrReattach()
+    {
+        if (_currentLives <= 0)
         {
             CurrentState = State.GameOver;
+        }
+        else
+        {
+            Attach();
         }
     }
 }
