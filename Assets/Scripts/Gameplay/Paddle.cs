@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Paddle : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Transform shape;
     [SerializeField] private float moveSpeed = 1f;
 
     private Vector3? _attachedBallOffset;
@@ -46,7 +46,7 @@ public class Paddle : MonoBehaviour
         var boundsTransform = GameBounds.Instance.BoundsTransform;
         var boundsPosition = boundsTransform.position;
         var boundsScale = boundsTransform.lossyScale;
-        var myScale = spriteRenderer.transform.lossyScale;
+        var myScale = shape.lossyScale;
         var minX = boundsPosition.x - 0.5f * (boundsScale.x - myScale.x);
         var maxX = boundsPosition.x + 0.5f * (boundsScale.x - myScale.x);
         return position.x < minX || position.x > maxX

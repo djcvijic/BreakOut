@@ -5,7 +5,7 @@ using Random = System.Random;
 
 public class Ball : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Transform shape;
     [SerializeField] private float speed = 1f;
 
     private bool _attached;
@@ -52,7 +52,7 @@ public class Ball : MonoBehaviour
         var boundsTransform = GameBounds.Instance.BoundsTransform;
         var boundsPosition = boundsTransform.position;
         var boundsScale = boundsTransform.lossyScale;
-        var myScale = spriteRenderer.transform.lossyScale;
+        var myScale = shape.lossyScale;
         var minX = boundsPosition.x - 0.5f * (boundsScale.x - myScale.x);
         var maxX = boundsPosition.x + 0.5f * (boundsScale.x - myScale.x);
         var minY = boundsPosition.y - 0.5f * (boundsScale.y - myScale.y);

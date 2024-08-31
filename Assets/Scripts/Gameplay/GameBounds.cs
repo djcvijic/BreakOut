@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GameBounds : MonoSingleton<GameBounds>
 {
-    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Transform shape;
 
-    public Transform BoundsTransform => spriteRenderer.transform;
+    public Transform BoundsTransform => shape;
 }
