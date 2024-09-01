@@ -825,6 +825,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1440835338}
+  - component: {fileID: 1440835339}
   m_Layer: 0
   m_Name: LevelGrid
   m_TagString: Untagged
@@ -850,6 +851,20 @@ Transform:
   - {fileID: 605846039}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1440835339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1440835337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5fa617f5b19490c9e85fa6a043d9bfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bricksPerRow: 10
+  brickPrefab: {fileID: 3500143777347616488, guid: d3c7b82c9b49642d0bb2b6d7bcddf07b, type: 3}
 --- !u!1 &1445676030
 GameObject:
   m_ObjectHideFlags: 0
@@ -908,6 +923,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxLives: 3
+  levelGrid: {fileID: 1440835339}
 --- !u!1001 &1449103596
 PrefabInstance:
   m_ObjectHideFlags: 0

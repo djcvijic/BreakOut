@@ -5,6 +5,7 @@ using Util;
 public class GameController : MonoSingleton<GameController>
 {
     [SerializeField] private int maxLives = 3;
+    [SerializeField] private LevelGridView levelGrid;
 
     public enum State
     {
@@ -45,6 +46,7 @@ public class GameController : MonoSingleton<GameController>
     private void StartLevel()
     {
         var level = new LevelLoader().Load(_levelIndex);
+        levelGrid.Initialize(level.Grid);
         Attach();
     }
 
