@@ -92,5 +92,23 @@ public class Ball : MonoBehaviour
             SetRandomAngle();
             return;
         }
+
+        var brick = other.GetComponentInParent<Brick>();
+        if (brick != null)
+        {
+            var direction = brick.transform.position - transform.position;
+            if (direction.y > 0 && _currentVelocity.y > 0 || direction.y < 0 && _currentVelocity.y < 0)
+            {
+                brick.GetHit();
+                ReflectY();
+            }
+
+            return;
+        }
+    }
+
+    private void ReflectY()
+    {
+        _currentVelocity = new Vector3(_currentVelocity.x, -_currentVelocity.y, _currentVelocity.z);
     }
 }
