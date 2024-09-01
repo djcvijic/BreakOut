@@ -123,6 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shape: {fileID: 7850887935029930483}
+  meshRenderer: {fileID: 62085951114803022}
 --- !u!1 &7951055021000998026
 GameObject:
   m_ObjectHideFlags: 0

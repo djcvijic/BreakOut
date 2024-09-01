@@ -12,3 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0639555dd7c545fcbc04c48a21fc8e07, type: 3}
   m_Name: 1
   m_EditorClassIdentifier: 
+  defaultMaterial: {fileID: 2100000, guid: eba059040359443dda1335bb2d2779fc, type: 2}
+  healthMaterials: []
+  <StartingHealth>k__BackingField: 1
+  <IsInvincible>k__BackingField: 0

@@ -7,20 +7,28 @@ public class LevelGridView : MonoBehaviour
 
     public void Initialize(LevelGrid levelGrid)
     {
-        var gridTransform = transform;
-        foreach (Transform child in gridTransform)
+        ClearBricks();
+        InstantiateBricks(levelGrid);
+    }
+
+    private void ClearBricks()
+    {
+        foreach (Transform child in transform)
         {
             Destroy(child.gameObject);
         }
+    }
 
+    private void InstantiateBricks(LevelGrid levelGrid)
+    {
+        var gridTransform = transform;
         var boundsScale = GameBounds.Instance.BoundsTransform.lossyScale;
         var brickTransform = brickPrefab.Shape;
         var brickScale = brickTransform.lossyScale;
-        var gapSize = (boundsScale.x - 10 * brickTransform.lossyScale.x) / 11;
+        var gapSize = (boundsScale.x - bricksPerRow * brickScale.x) / (bricksPerRow + 1);
         for (var rowIndex = 0; rowIndex < levelGrid.Rows.Count; rowIndex++)
         {
             var row = levelGrid.Rows[rowIndex];
-            var rowSize = row.Brick.Count;
             for (var columnIndex = 0; columnIndex < row.Brick.Count; columnIndex++)
             {
                 var brick = row.Brick[columnIndex];
