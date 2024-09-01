@@ -13,6 +13,7 @@ public class GameController : MonoSingleton<GameController>
     }
 
     private Paddle _paddle;
+    private int _levelIndex;
     private int _currentLives;
 
     public State CurrentState { get; private set; } = State.Playing;
@@ -38,6 +39,12 @@ public class GameController : MonoSingleton<GameController>
     private void StartGame()
     {
         _currentLives = maxLives;
+        StartLevel();
+    }
+
+    private void StartLevel()
+    {
+        var level = new LevelLoader().Load(_levelIndex);
         Attach();
     }
 
