@@ -18,13 +18,7 @@ public class MainMenu : MonoBehaviour
 
     private void ClearButtons()
     {
-        foreach (Transform button in buttonHolder)
-        {
-            if (button != levelEditorButton.transform)
-            {
-                Destroy(button.gameObject);
-            }
-        }
+        buttonHolder.ClearTransform(levelEditorButton.transform);
     }
 
     private void SetUpLevels()
@@ -37,7 +31,7 @@ public class MainMenu : MonoBehaviour
                     .text = $"Level {i + 1}";
 
             var levelIndex = i;
-            button.onClick.SetListener(() => LoadLevel(levelIndex));
+            button.SetListener(() => LoadLevel(levelIndex));
         }
     }
 
@@ -50,7 +44,7 @@ public class MainMenu : MonoBehaviour
     private void SetUpLevelEditor()
     {
         levelEditorButton.transform.SetAsLastSibling();
-        levelEditorButton.onClick.SetListener(LoadLevelEditor);
+        levelEditorButton.SetListener(LoadLevelEditor);
     }
 
     private static void LoadLevelEditor()

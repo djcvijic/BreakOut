@@ -36,3 +36,9 @@ public static class LevelLoader
             levelDto.allowedPowerUps.ConvertAll(PowerUpScriptable.Load));
     }
 }
+
+public class LevelDto
+{
+    public List<List<int>> board;
+    public List<int> allowedPowerUps;
+}

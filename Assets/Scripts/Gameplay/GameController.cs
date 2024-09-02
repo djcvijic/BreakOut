@@ -10,6 +10,7 @@ public class GameController : MonoSingleton<GameController>
     public enum State
     {
         Playing,
+        Paused,
         GameOver
     }
 
@@ -82,5 +83,19 @@ public class GameController : MonoSingleton<GameController>
         {
             Attach();
         }
+    }
+
+    public void Pause()
+    {
+        if (CurrentState != State.Playing) return;
+
+        CurrentState = State.Paused;
+    }
+
+    public void UnPause()
+    {
+        if (CurrentState != State.Paused) return;
+
+        CurrentState = State.Playing;
     }
 }

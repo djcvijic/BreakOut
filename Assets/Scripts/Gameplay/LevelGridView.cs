@@ -13,10 +13,7 @@ public class LevelGridView : MonoBehaviour
 
     private void ClearBricks()
     {
-        foreach (Transform child in transform)
-        {
-            Destroy(child.gameObject);
-        }
+        transform.ClearTransform();
     }
 
     private void InstantiateBricks(LevelGrid levelGrid)
