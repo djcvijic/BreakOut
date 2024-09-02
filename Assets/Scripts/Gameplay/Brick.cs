@@ -12,6 +12,7 @@ public class Brick : MonoBehaviour
     private int _currentHealth;
 
     public Transform Shape => shape;
+    public bool IsInvincible => _scriptable.IsInvincible;
 
     public void GetHit()
     {
@@ -20,7 +21,7 @@ public class Brick : MonoBehaviour
         _currentHealth -= 1;
         if (_currentHealth <= 0)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
             Notifier.Instance.Notify(new BrickDestroyedMessage(_scriptable.ScoreContribution));
             return;
         }

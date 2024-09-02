@@ -20,17 +20,24 @@ public class InGameMenu : MonoBehaviour
     {
         overlay.SetActive(false);
         pauseButton.SetListener(Pause);
-        unPauseButton.SetListener(UnPause);
+        unPauseButton.SetListener(UnPauseOrNextLevel);
         restartButton.SetListener(Restart);
         quitButton.SetListener(Quit);
     }
 
     private void Update()
     {
-        if (GameController.Instance.CurrentState == GameController.State.GameOver)
+        switch (GameController.Instance.CurrentState)
         {
-            GameOver();
-            return;
+            case GameController.State.LevelStarting:
+                LevelStarting();
+                return;
+            case GameController.State.LevelComplete:
+                LevelComplete();
+                return;
+            case GameController.State.GameOver:
+                GameOver();
+                return;
         }
 
         if (Input.GetKeyDown(KeyCode.P))
@@ -52,6 +59,34 @@ public class InGameMenu : MonoBehaviour
 
         livesField.text = $"LIVES: {new string('\u2665', GameController.Instance.CurrentLives)}";
         scoreField.text = $"SCORE: {GameController.Instance.CurrentScore}";
+
+        if (GameController.Instance.CurrentState == GameController.State.Playing)
+        {
+            overlay.SetActive(false);
+        }
+    }
+
+    private void LevelStarting()
+    {
+        overlay.SetActive(true);
+        overlayTitle.text = $"LEVEL {GameController.Instance.LevelIndex + 1}\nGET READY";
+        unPauseButton.gameObject.SetActive(false);
+        restartButton.gameObject.SetActive(false);
+        quitButton.gameObject.SetActive(false);
+    }
+
+    private void Playing()
+    {
+        overlay.SetActive(false);
+    }
+
+    private void LevelComplete()
+    {
+        overlay.SetActive(true);
+        overlayTitle.text = $"LEVEL {GameController.Instance.LevelIndex + 1}\nCOMPLETE";
+        unPauseButton.gameObject.SetActive(true);
+        restartButton.gameObject.SetActive(false);
+        quitButton.gameObject.SetActive(false);
     }
 
     private void GameOver()
@@ -60,6 +95,8 @@ public class InGameMenu : MonoBehaviour
         overlayTitle.text =
             $"GAME OVER\nLEVEL: {GameController.Instance.LevelIndex + 1}\nSCORE: {GameController.Instance.CurrentScore}";
         unPauseButton.gameObject.SetActive(false);
+        restartButton.gameObject.SetActive(true);
+        quitButton.gameObject.SetActive(true);
     }
 
     private void Pause()
@@ -70,14 +107,23 @@ public class InGameMenu : MonoBehaviour
         overlay.SetActive(true);
         overlayTitle.text = "PAUSED";
         unPauseButton.gameObject.SetActive(true);
+        restartButton.gameObject.SetActive(true);
+        quitButton.gameObject.SetActive(true);
     }
 
-    private void UnPause()
+    private void UnPauseOrNextLevel()
     {
-        if (GameController.Instance.CurrentState != GameController.State.Paused) return;
-
-        overlay.SetActive(false);
-        GameController.Instance.UnPause();
+        switch (GameController.Instance.CurrentState)
+        {
+            case GameController.State.Paused:
+                overlay.SetActive(false);
+                GameController.Instance.UnPause();
+                break;
+            case GameController.State.LevelComplete:
+                overlay.SetActive(false);
+                GameController.Instance.NextLevel();
+                break;
+        }
     }
 
     private static void Restart()

@@ -1,3 +1,6 @@
+using System.Collections;
+using System.Linq;
+using System.Threading.Tasks;
 using Messages;
 using UnityEngine;
 using Util;
@@ -9,19 +12,25 @@ public class GameController : MonoSingleton<GameController>
 
     public enum State
     {
+        LevelStarting,
         Playing,
         Paused,
+        LevelComplete,
         GameOver
     }
 
     private Paddle _paddle;
 
-    public State CurrentState { get; private set; } = State.Playing;
+    public State CurrentState { get; private set; }
     public int CurrentLives { get; private set; }
     public int CurrentScore { get; private set; }
     public int PowerUpSecondsRemaining { get; private set; }
 
-    public int LevelIndex => Meta.LevelIndex;
+    public int LevelIndex
+    {
+        get => Meta.LevelIndex;
+        private set => Meta.LevelIndex = value;
+    }
 
     private void OnEnable()
     {
@@ -50,11 +59,16 @@ public class GameController : MonoSingleton<GameController>
         StartLevel();
     }
 
-    private void StartLevel()
+    private async void StartLevel()
     {
         var level = LevelLoader.Load(LevelIndex);
         levelGrid.Initialize(level.Grid);
         Attach();
+        CurrentState = State.LevelStarting;
+
+        await Task.Delay(2000);
+
+        CurrentState = State.Playing;
     }
 
     private void Attach()
@@ -67,6 +81,15 @@ public class GameController : MonoSingleton<GameController>
     private void OnBrickDestroyed(BrickDestroyedMessage message)
     {
         CurrentScore += message.scoreContribution;
+        CheckLevelComplete();
+    }
+
+    private void CheckLevelComplete()
+    {
+        var remainingBricks = FindObjectsByType<Brick>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        if (remainingBricks.Any(x => !x.IsInvincible)) return;
+
+        CurrentState = State.LevelComplete;
     }
 
     private void OnBallDestroyed(BallDestroyedMessage message)
@@ -107,5 +130,11 @@ public class GameController : MonoSingleton<GameController>
         if (CurrentState != State.Paused) return;
 
         CurrentState = State.Playing;
+    }
+
+    public void NextLevel()
+    {
+        LevelIndex += 1;
+        StartLevel();
     }
 }
