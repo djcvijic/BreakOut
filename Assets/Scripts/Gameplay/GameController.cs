@@ -21,7 +21,7 @@ public class GameController : MonoSingleton<GameController>
     public int CurrentScore { get; private set; }
     public int PowerUpSecondsRemaining { get; private set; }
 
-    private static int LevelIndex => Meta.LevelIndex;
+    public int LevelIndex => Meta.LevelIndex;
 
     private void OnEnable()
     {

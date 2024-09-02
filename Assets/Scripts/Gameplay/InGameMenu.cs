@@ -11,6 +11,7 @@ public class InGameMenu : MonoBehaviour
     [SerializeField] private TMP_Text scoreField;
     [SerializeField] private Button pauseButton;
     [SerializeField] private GameObject overlay;
+    [SerializeField] private TMP_Text overlayTitle;
     [SerializeField] private Button unPauseButton;
     [SerializeField] private Button restartButton;
     [SerializeField] private Button quitButton;
@@ -26,9 +27,16 @@ public class InGameMenu : MonoBehaviour
 
     private void Update()
     {
+        if (GameController.Instance.CurrentState == GameController.State.GameOver)
+        {
+            GameOver();
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.P))
         {
             Pause();
+            return;
         }
 
         levelNumberField.text = $"LEVEL {Meta.LevelIndex + 1}";
@@ -46,14 +54,28 @@ public class InGameMenu : MonoBehaviour
         scoreField.text = $"SCORE: {GameController.Instance.CurrentScore}";
     }
 
+    private void GameOver()
+    {
+        overlay.SetActive(true);
+        overlayTitle.text =
+            $"GAME OVER\nLEVEL: {GameController.Instance.LevelIndex + 1}\nSCORE: {GameController.Instance.CurrentScore}";
+        unPauseButton.gameObject.SetActive(false);
+    }
+
     private void Pause()
     {
+        if (GameController.Instance.CurrentState != GameController.State.Playing) return;
+
         GameController.Instance.Pause();
         overlay.SetActive(true);
+        overlayTitle.text = "PAUSED";
+        unPauseButton.gameObject.SetActive(true);
     }
 
     private void UnPause()
     {
+        if (GameController.Instance.CurrentState != GameController.State.Paused) return;
+
         overlay.SetActive(false);
         GameController.Instance.UnPause();
     }
