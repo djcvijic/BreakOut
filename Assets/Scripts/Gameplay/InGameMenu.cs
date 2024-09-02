@@ -32,7 +32,15 @@ public class InGameMenu : MonoBehaviour
         }
 
         levelNumberField.text = $"LEVEL {Meta.LevelIndex + 1}";
-        powerUpTimerField.gameObject.SetActive(false);
+        if (GameController.Instance.PowerUpSecondsRemaining > 0)
+        {
+            powerUpTimerField.gameObject.SetActive(true);
+            powerUpTimerField.text = $"POWER UP: {GameController.Instance.PowerUpSecondsRemaining}";
+        }
+        else
+        {
+            powerUpTimerField.gameObject.SetActive(false);
+        }
 
         livesField.text = $"LIVES: {new string('\u2665', GameController.Instance.CurrentLives)}";
         scoreField.text = $"SCORE: {GameController.Instance.CurrentScore}";

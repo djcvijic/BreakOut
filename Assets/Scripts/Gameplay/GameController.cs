@@ -19,6 +19,7 @@ public class GameController : MonoSingleton<GameController>
     public State CurrentState { get; private set; } = State.Playing;
     public int CurrentLives { get; private set; }
     public int CurrentScore { get; private set; }
+    public int PowerUpSecondsRemaining { get; private set; }
 
     private static int LevelIndex => Meta.LevelIndex;
 
