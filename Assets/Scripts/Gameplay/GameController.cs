@@ -23,11 +23,12 @@ public class GameController : MonoSingleton<GameController>
 
     private Paddle _paddle;
     private List<PowerUpScriptable> _allowedPowerUps;
+    private PowerUpScriptable _activePowerUp;
 
     public State CurrentState { get; private set; }
     public int CurrentLives { get; private set; }
     public int CurrentScore { get; private set; }
-    public int PowerUpSecondsRemaining { get; private set; }
+    public int PowerUpSecondsRemaining => _activePowerUp?.SecondsRemaining ?? 0;
 
     public int LevelIndex
     {
@@ -72,6 +73,7 @@ public class GameController : MonoSingleton<GameController>
         levelGrid.Initialize(level.Grid);
         _allowedPowerUps = level.AllowedPowerUps;
         Attach();
+        StopActivePowerUp();
         ClearAllPowerUps();
         CurrentState = State.LevelStarting;
 
@@ -160,13 +162,24 @@ public class GameController : MonoSingleton<GameController>
 
     private void OnPowerUpCollected(PowerUpCollectedMessage message)
     {
-        switch (message.scriptable)
+        if (!message.scriptable.HasDuration)
         {
-            case ClonePowerUp clone:
-            {
-                clone.Run();
-                break;
-            }
+            Instantiate(message.scriptable).Start();
+            return;
+        }
+
+        StopActivePowerUp();
+
+        _activePowerUp = Instantiate(message.scriptable);
+        _activePowerUp.Start();
+    }
+
+    private void StopActivePowerUp()
+    {
+        if (_activePowerUp != null)
+        {
+            _activePowerUp.Stop();
+            _activePowerUp = null;
         }
     }
 

@@ -39,7 +39,9 @@ public abstract class MonoSingleton<T> : MonoBehaviour where T : MonoSingleton<T
         switch (instances.Length)
         {
             case 0:
-                return null;
+                return typeof(ISelfInstantiatingMonoSingleton).IsAssignableFrom(typeof(T))
+                    ? new GameObject($"{typeof(T).Name}").AddComponent<T>()
+                    : null;
             case 1:
                 return instances[0];
             default:

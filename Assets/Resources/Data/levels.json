@@ -74,7 +74,7 @@
         1
       ]
     ],
-    "allowedPowerUps": [ "Clone" ]
+    "allowedPowerUps": [ "Clone", "Extend" ]
   },
   {
     "board": [

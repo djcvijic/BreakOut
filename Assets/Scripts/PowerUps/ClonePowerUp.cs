@@ -7,12 +7,16 @@ public class ClonePowerUp : PowerUpScriptable
 
     public override bool HasDuration => false;
 
-    public void Run()
+    protected override void Run()
     {
         var ball = GameController.Instance.AnyBall;
         for (var i = 0; i < BallsToAdd; i++)
         {
             Instantiate(ball).UnAttach();
         }
+    }
+
+    protected override void OnEnded()
+    {
     }
 }

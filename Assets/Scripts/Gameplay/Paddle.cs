@@ -8,6 +8,8 @@ public class Paddle : MonoBehaviour
     private Vector3? _attachedBallOffset;
     private Ball _attachedBall;
 
+    public Transform Shape => shape;
+
     public void Attach(Ball ball)
     {
         _attachedBall = ball;
