@@ -102,9 +102,19 @@ public class Ball : MonoBehaviour
                 brick.GetHit();
                 ReflectY();
             }
+            else if (direction.x > 0 && _currentVelocity.x > 0 || direction.x < 0 && _currentVelocity.x < 0)
+            {
+                brick.GetHit();
+                ReflectX();
+            }
 
             return;
         }
+    }
+
+    private void ReflectX()
+    {
+        _currentVelocity = new Vector3(-_currentVelocity.x, _currentVelocity.y, _currentVelocity.z);
     }
 
     private void ReflectY()
