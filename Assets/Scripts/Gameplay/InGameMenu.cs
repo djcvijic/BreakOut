@@ -1,9 +1,11 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class InGameMenu : MonoBehaviour
 {
+    [SerializeField] private TMP_Text scoreField;
     [SerializeField] private Button pauseButton;
     [SerializeField] private GameObject overlay;
     [SerializeField] private Button unPauseButton;
@@ -25,6 +27,8 @@ public class InGameMenu : MonoBehaviour
         {
             Pause();
         }
+
+        scoreField.text = $"SCORE: {GameController.Instance.CurrentScore}";
     }
 
     private void Pause()

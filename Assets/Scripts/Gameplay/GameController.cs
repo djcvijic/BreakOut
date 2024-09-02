@@ -18,17 +18,20 @@ public class GameController : MonoSingleton<GameController>
     private int _currentLives;
 
     public State CurrentState { get; private set; } = State.Playing;
+    public int CurrentScore { get; private set; }
 
     private static int LevelIndex => Meta.LevelIndex;
 
     private void OnEnable()
     {
         Notifier.Instance.Subscribe<BallDestroyedMessage>(OnBallDestroyed);
+        Notifier.Instance.Subscribe<BrickDestroyedMessage>(OnBrickDestroyed);
     }
 
     private void OnDisable()
     {
         Notifier.Instance.Unsubscribe<BallDestroyedMessage>(OnBallDestroyed);
+        Notifier.Instance.Unsubscribe<BrickDestroyedMessage>(OnBrickDestroyed);
     }
 
     protected override void OnAwake()
@@ -42,6 +45,7 @@ public class GameController : MonoSingleton<GameController>
     private void StartGame()
     {
         _currentLives = maxLives;
+        CurrentScore = 0;
         StartLevel();
     }
 
@@ -57,6 +61,11 @@ public class GameController : MonoSingleton<GameController>
         var ball = FindAnyObjectByType<Ball>(FindObjectsInactive.Include);
         ball.gameObject.SetActive(true);
         _paddle.Attach(ball);
+    }
+
+    private void OnBrickDestroyed(BrickDestroyedMessage message)
+    {
+        CurrentScore += message.scoreContribution;
     }
 
     private void OnBallDestroyed(BallDestroyedMessage message)

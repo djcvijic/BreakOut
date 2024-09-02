@@ -1,4 +1,6 @@
+using Messages;
 using UnityEngine;
+using Util;
 using Random = System.Random;
 
 public class Brick : MonoBehaviour
@@ -19,6 +21,7 @@ public class Brick : MonoBehaviour
         if (_currentHealth <= 0)
         {
             Destroy(gameObject);
+            Notifier.Instance.Notify(new BrickDestroyedMessage(_scriptable.ScoreContribution));
             return;
         }
 

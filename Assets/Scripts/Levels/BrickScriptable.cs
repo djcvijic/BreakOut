@@ -11,6 +11,7 @@ public class BrickScriptable : ScriptableObject
     [field: SerializeField] public int StartingHealth { get; private set; } = 1;
     [field: SerializeField] public bool IsInvincible { get; private set; }
     [field: SerializeField] public bool DoesTeleport { get; private set; }
+    [field: SerializeField] public int ScoreContribution { get; private set; } = 1;
 
     public static BrickScriptable Load(int assetName)
     {
