@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class InGameMenu : MonoBehaviour
 {
+    [SerializeField] private TMP_Text levelNumberField;
     [SerializeField] private TMP_Text livesField;
     [SerializeField] private TMP_Text scoreField;
     [SerializeField] private Button pauseButton;
@@ -29,6 +30,7 @@ public class InGameMenu : MonoBehaviour
             Pause();
         }
 
+        levelNumberField.text = $"LEVEL {Meta.LevelIndex + 1}";
         livesField.text = $"LIVES: {new string('\u2665', GameController.Instance.CurrentLives)}";
         scoreField.text = $"SCORE: {GameController.Instance.CurrentScore}";
     }
