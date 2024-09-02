@@ -22,7 +22,10 @@ public class Brick : MonoBehaviour
         if (_currentHealth <= 0)
         {
             gameObject.SetActive(false);
-            Notifier.Instance.Notify(new BrickDestroyedMessage(_scriptable.ScoreContribution));
+            Notifier.Instance.Notify(new BrickDestroyedMessage(
+                _scriptable.ScoreContribution,
+                _scriptable.PowerUpProbability,
+                transform.position));
             return;
         }
 

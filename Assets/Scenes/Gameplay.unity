@@ -2592,6 +2592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxLives: 3
   levelGrid: {fileID: 1440835339}
+  powerUpPrefab: {fileID: 2232066769803507831, guid: e378a1c9fa8c04d7ebd746c4306d7215, type: 3}
 --- !u!1001 &1449103596
 PrefabInstance:
   m_ObjectHideFlags: 0

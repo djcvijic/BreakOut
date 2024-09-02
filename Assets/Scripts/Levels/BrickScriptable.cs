@@ -12,6 +12,7 @@ public class BrickScriptable : ScriptableObject
     [field: SerializeField] public bool IsInvincible { get; private set; }
     [field: SerializeField] public bool DoesTeleport { get; private set; }
     [field: SerializeField] public int ScoreContribution { get; private set; } = 1;
+    [field: SerializeField] public float PowerUpProbability { get; private set; } = 0.2f;
 
     public static BrickScriptable Load(int assetName)
     {

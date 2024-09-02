@@ -40,5 +40,5 @@ public static class LevelLoader
 public class LevelDto
 {
     public List<List<int>> board;
-    public List<int> allowedPowerUps;
+    public List<string> allowedPowerUps;
 }

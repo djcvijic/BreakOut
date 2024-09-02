@@ -1,14 +1,16 @@
-using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Messages;
 using UnityEngine;
 using Util;
+using Random = System.Random;
 
 public class GameController : MonoSingleton<GameController>
 {
     [SerializeField] private int maxLives = 3;
     [SerializeField] private LevelGridView levelGrid;
+    [SerializeField] private PowerUp powerUpPrefab;
 
     public enum State
     {
@@ -20,6 +22,7 @@ public class GameController : MonoSingleton<GameController>
     }
 
     private Paddle _paddle;
+    private List<PowerUpScriptable> _allowedPowerUps;
 
     public State CurrentState { get; private set; }
     public int CurrentLives { get; private set; }
@@ -32,16 +35,20 @@ public class GameController : MonoSingleton<GameController>
         private set => Meta.LevelIndex = value;
     }
 
+    public Ball AnyBall => FindAnyObjectByType<Ball>(FindObjectsInactive.Exclude);
+
     private void OnEnable()
     {
         Notifier.Instance.Subscribe<BallDestroyedMessage>(OnBallDestroyed);
         Notifier.Instance.Subscribe<BrickDestroyedMessage>(OnBrickDestroyed);
+        Notifier.Instance.Subscribe<PowerUpCollectedMessage>(OnPowerUpCollected);
     }
 
     private void OnDisable()
     {
         Notifier.Instance.Unsubscribe<BallDestroyedMessage>(OnBallDestroyed);
         Notifier.Instance.Unsubscribe<BrickDestroyedMessage>(OnBrickDestroyed);
+        Notifier.Instance.Unsubscribe<PowerUpCollectedMessage>(OnPowerUpCollected);
     }
 
     protected override void OnAwake()
@@ -63,7 +70,9 @@ public class GameController : MonoSingleton<GameController>
     {
         var level = LevelLoader.Load(LevelIndex);
         levelGrid.Initialize(level.Grid);
+        _allowedPowerUps = level.AllowedPowerUps;
         Attach();
+        ClearAllPowerUps();
         CurrentState = State.LevelStarting;
 
         await Task.Delay(2000);
@@ -71,17 +80,48 @@ public class GameController : MonoSingleton<GameController>
         CurrentState = State.Playing;
     }
 
+    private void ClearAllPowerUps()
+    {
+        var allPowerUps = FindObjectsByType<PowerUp>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (var powerUp in allPowerUps)
+        {
+            Destroy(powerUp.gameObject);
+        }
+    }
+
     private void Attach()
     {
-        var ball = FindAnyObjectByType<Ball>(FindObjectsInactive.Include);
+        var allBalls = FindObjectsByType<Ball>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        var ball = allBalls[0];
         ball.gameObject.SetActive(true);
         _paddle.Attach(ball);
+
+        // leave the first ball alive, clear the rest
+        for (int i = 1; i < allBalls.Length; i++)
+        {
+            Destroy(allBalls[i].gameObject);
+        }
     }
 
     private void OnBrickDestroyed(BrickDestroyedMessage message)
     {
         CurrentScore += message.scoreContribution;
+        CheckDropPowerUp(message.powerUpProbability, message.brickPosition);
         CheckLevelComplete();
+    }
+
+    private void CheckDropPowerUp(float powerUpProbability, Vector3 brickPosition)
+    {
+        if (_allowedPowerUps == null || _allowedPowerUps.Count == 0) return;
+
+        var random = new Random();
+        if (powerUpProbability < random.NextDouble()) return;
+
+        var powerUp = _allowedPowerUps.Random();
+        if (powerUp == null) return;
+
+        Instantiate(powerUpPrefab, brickPosition, Quaternion.identity)
+            .Initialize(powerUp);
     }
 
     private void CheckLevelComplete()
@@ -99,8 +139,7 @@ public class GameController : MonoSingleton<GameController>
 
     private void CheckLoseLife()
     {
-        var anyBall = FindAnyObjectByType<Ball>(FindObjectsInactive.Exclude);
-        if (anyBall != null) return;
+        if (AnyBall != null) return;
 
         CurrentLives -= 1;
         GameOverOrReattach();
@@ -115,6 +154,19 @@ public class GameController : MonoSingleton<GameController>
         else
         {
             Attach();
+            ClearAllPowerUps();
+        }
+    }
+
+    private void OnPowerUpCollected(PowerUpCollectedMessage message)
+    {
+        switch (message.scriptable)
+        {
+            case ClonePowerUp clone:
+            {
+                clone.Run();
+                break;
+            }
         }
     }
 

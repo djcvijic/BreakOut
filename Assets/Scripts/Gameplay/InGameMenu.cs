@@ -128,6 +128,11 @@ public class InGameMenu : MonoBehaviour
 
     private static void Restart()
     {
+        if (GameController.Instance.CurrentState == GameController.State.GameOver)
+        {
+            Meta.LevelIndex = 0;
+        }
+
         SceneManager.LoadScene("Scenes/Gameplay");
     }
 

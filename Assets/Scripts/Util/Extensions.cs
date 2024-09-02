@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Random = System.Random;
 
 public static class Extensions
 {
@@ -24,5 +26,13 @@ public static class Extensions
     {
         unityEvent.RemoveAllListeners();
         unityEvent.AddListener(call);
+    }
+
+    public static T Random<T>(this List<T> list)
+    {
+        if (list == null || list.Count == 0) return default;
+
+        var random = new Random();
+        return list[random.Next(0, list.Count)];
     }
 }

@@ -1,9 +1,12 @@
 using UnityEngine;
 
-[CreateAssetMenu]
-public class PowerUpScriptable : ScriptableObject
+public abstract class PowerUpScriptable : ScriptableObject
 {
-    public static PowerUpScriptable Load(int assetName)
+    [field: SerializeField] public int DurationSeconds { get; private set; }
+
+    public abstract bool HasDuration { get; }
+
+    public static PowerUpScriptable Load(string assetName)
     {
         return Resources.Load<PowerUpScriptable>($"PowerUps/{assetName}");
     }
