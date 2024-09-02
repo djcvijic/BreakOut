@@ -15,9 +15,9 @@ public class GameController : MonoSingleton<GameController>
     }
 
     private Paddle _paddle;
-    private int _currentLives;
 
     public State CurrentState { get; private set; } = State.Playing;
+    public int CurrentLives { get; private set; }
     public int CurrentScore { get; private set; }
 
     private static int LevelIndex => Meta.LevelIndex;
@@ -44,7 +44,7 @@ public class GameController : MonoSingleton<GameController>
 
     private void StartGame()
     {
-        _currentLives = maxLives;
+        CurrentLives = maxLives;
         CurrentScore = 0;
         StartLevel();
     }
@@ -78,13 +78,13 @@ public class GameController : MonoSingleton<GameController>
         var anyBall = FindAnyObjectByType<Ball>(FindObjectsInactive.Exclude);
         if (anyBall != null) return;
 
-        _currentLives -= 1;
+        CurrentLives -= 1;
         GameOverOrReattach();
     }
 
     private void GameOverOrReattach()
     {
-        if (_currentLives <= 0)
+        if (CurrentLives <= 0)
         {
             CurrentState = State.GameOver;
         }
