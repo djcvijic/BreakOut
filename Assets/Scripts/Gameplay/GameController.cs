@@ -14,10 +14,11 @@ public class GameController : MonoSingleton<GameController>
     }
 
     private Paddle _paddle;
-    private int _levelIndex;
     private int _currentLives;
 
     public State CurrentState { get; private set; } = State.Playing;
+
+    private static int LevelIndex => Meta.LevelIndex;
 
     private void OnEnable()
     {
@@ -45,7 +46,7 @@ public class GameController : MonoSingleton<GameController>
 
     private void StartLevel()
     {
-        var level = new LevelLoader().Load(_levelIndex);
+        var level = LevelLoader.Load(LevelIndex);
         levelGrid.Initialize(level.Grid);
         Attach();
     }

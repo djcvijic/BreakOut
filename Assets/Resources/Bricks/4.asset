@@ -18,3 +18,4 @@ MonoBehaviour:
     <Material>k__BackingField: {fileID: 2100000, guid: eb6b7063da5b3452699317e747d6455b, type: 2}
   <StartingHealth>k__BackingField: 2
   <IsInvincible>k__BackingField: 0
+  <DoesTeleport>k__BackingField: 1

@@ -37,13 +37,13 @@ public class Brick : MonoBehaviour
         meshRenderer.material = _scriptable.GetMaterial(_currentHealth);
     }
 
-    public void Teleport()
+    private void Teleport()
     {
         var random = new Random();
         var boundsScale = GameBounds.Instance.BoundsTransform.lossyScale;
         var newPosition = new Vector3(
-            (2f * (float)random.NextDouble() - 1f) * boundsScale.x,
-            (float)random.NextDouble() * boundsScale.y,
+            ((float)random.NextDouble() - 0.5f) * boundsScale.x,
+            ((float)random.NextDouble() - 0.5f) * boundsScale.y,
             0);
         transform.position = newPosition;
     }
