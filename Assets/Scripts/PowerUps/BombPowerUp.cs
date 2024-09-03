@@ -10,6 +10,8 @@ public class BombPowerUp : PowerUpScriptable
 
     public override bool HasDuration => false;
 
+    public override string Name => "BOMB";
+
     protected override void Run()
     {
         Notifier.Instance.Subscribe<BrickDestroyedMessage>(OnBrickDestroyed);

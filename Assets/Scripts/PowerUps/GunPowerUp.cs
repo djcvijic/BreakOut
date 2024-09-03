@@ -5,6 +5,8 @@ public class GunPowerUp : PowerUpScriptable
 {
     public override bool HasDuration => true;
 
+    public override string Name => "GUN";
+
     protected override void Run()
     {
         GameController.Instance.Paddle.HasAGun = true;

@@ -7,6 +7,8 @@ public class FireballPowerUp : PowerUpScriptable
 
     public override bool HasDuration => true;
 
+    public override string Name => "FIREBALL";
+
     protected override void Run()
     {
         _ball = GameController.Instance.AnyBall;

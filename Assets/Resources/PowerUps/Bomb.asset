@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Bomb
   m_EditorClassIdentifier: 
   <DurationSeconds>k__BackingField: 10
-  blastRadius: 3
+  blastRadius: 5
   blastPrefab: {fileID: 788143911249463815, guid: 3e53030517c4348899b18b52abf78cc4, type: 3}

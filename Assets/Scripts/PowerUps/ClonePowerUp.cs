@@ -7,6 +7,8 @@ public class ClonePowerUp : PowerUpScriptable
 
     public override bool HasDuration => false;
 
+    public override string Name => "CLONE";
+
     protected override void Run()
     {
         var ball = GameController.Instance.AnyBall;

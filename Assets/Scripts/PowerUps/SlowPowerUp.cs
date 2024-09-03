@@ -10,6 +10,8 @@ public class SlowPowerUp : PowerUpScriptable
 
     public override bool HasDuration => true;
 
+    public override string Name => "SLOW";
+
     protected override void Run()
     {
         _ball = GameController.Instance.AnyBall;

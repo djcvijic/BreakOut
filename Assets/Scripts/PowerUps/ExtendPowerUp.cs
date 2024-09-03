@@ -10,6 +10,8 @@ public class ExtendPowerUp : PowerUpScriptable
 
     public override bool HasDuration => true;
 
+    public override string Name => "EXTEND";
+
     protected override void Run()
     {
         _paddle = FindAnyObjectByType<Paddle>(FindObjectsInactive.Exclude);

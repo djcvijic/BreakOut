@@ -50,7 +50,8 @@ public class InGameMenu : MonoBehaviour
         if (GameController.Instance.PowerUpSecondsRemaining > 0)
         {
             powerUpTimerField.gameObject.SetActive(true);
-            powerUpTimerField.text = $"POWER UP: {GameController.Instance.PowerUpSecondsRemaining}";
+            powerUpTimerField.text =
+                $"{GameController.Instance.ActivePowerUp.Name}: {GameController.Instance.PowerUpSecondsRemaining}";
         }
         else
         {
@@ -73,11 +74,6 @@ public class InGameMenu : MonoBehaviour
         unPauseButton.gameObject.SetActive(false);
         restartButton.gameObject.SetActive(false);
         quitButton.gameObject.SetActive(false);
-    }
-
-    private void Playing()
-    {
-        overlay.SetActive(false);
     }
 
     private void LevelComplete()

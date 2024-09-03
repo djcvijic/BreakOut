@@ -74,7 +74,7 @@
         1
       ]
     ],
-    "allowedPowerUps": [ "Reverse" ]
+    "allowedPowerUps": [ "Clone", "Extend", "Fireball", "Bomb", "Gun", "Slow", "Reverse" ]
   },
   {
     "board": [
@@ -151,7 +151,7 @@
         1
       ]
     ],
-    "allowedPowerUps": []
+    "allowedPowerUps": [ "Clone", "Extend", "Fireball", "Bomb", "Gun", "Slow", "Reverse" ]
   },
   {
     "board": [
@@ -228,6 +228,6 @@
         2
       ]
     ],
-    "allowedPowerUps": []
+    "allowedPowerUps": [ "Clone", "Extend", "Fireball", "Bomb", "Gun", "Slow", "Reverse" ]
   }
 ]

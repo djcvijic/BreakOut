@@ -5,6 +5,8 @@ public class ReversePowerUp : PowerUpScriptable
 {
     public override bool HasDuration => true;
 
+    public override string Name => "REVERSE";
+
     protected override void Run()
     {
         PlayerInputHandler.Instance.IsReversed = true;

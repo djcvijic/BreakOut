@@ -11,6 +11,8 @@ public abstract class PowerUpScriptable : ScriptableObject
 
     public abstract bool HasDuration { get; }
 
+    public abstract string Name { get; }
+
     public static PowerUpScriptable Load(string assetName)
     {
         return Resources.Load<PowerUpScriptable>($"PowerUps/{assetName}");

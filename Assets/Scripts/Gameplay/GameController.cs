@@ -22,13 +22,13 @@ public class GameController : MonoSingleton<GameController>
     }
 
     private List<PowerUpScriptable> _allowedPowerUps;
-    private PowerUpScriptable _activePowerUp;
 
     public Paddle Paddle { get; private set; }
     public State CurrentState { get; private set; }
     public int CurrentLives { get; private set; }
     public int CurrentScore { get; private set; }
-    public int PowerUpSecondsRemaining => _activePowerUp?.SecondsRemaining ?? 0;
+    public PowerUpScriptable ActivePowerUp { get; private set; }
+    public int PowerUpSecondsRemaining => ActivePowerUp?.SecondsRemaining ?? 0;
 
     public int LevelIndex
     {
@@ -80,6 +80,23 @@ public class GameController : MonoSingleton<GameController>
         CurrentState = State.Playing;
     }
 
+    private void ResetLevel()
+    {
+        ResetBalls();
+        StopActivePowerUp();
+        ClearAllPowerUps();
+        ClearAllBullets();
+    }
+
+    private void ClearAllBullets()
+    {
+        var allBullets = FindObjectsByType<Bullet>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        foreach (var bullet in allBullets)
+        {
+            bullet.gameObject.SetActive(false);
+        }
+    }
+
     private void ClearAllPowerUps()
     {
         var allPowerUps = FindObjectsByType<PowerUp>(FindObjectsInactive.Include, FindObjectsSortMode.None);
@@ -87,13 +104,6 @@ public class GameController : MonoSingleton<GameController>
         {
             Destroy(powerUp.gameObject);
         }
-    }
-
-    private void ResetLevel()
-    {
-        ResetBalls();
-        StopActivePowerUp();
-        ClearAllPowerUps();
     }
 
     private void ResetBalls()
@@ -175,16 +185,16 @@ public class GameController : MonoSingleton<GameController>
 
         StopActivePowerUp();
 
-        _activePowerUp = Instantiate(message.scriptable);
-        _activePowerUp.Start();
+        ActivePowerUp = Instantiate(message.scriptable);
+        ActivePowerUp.Start();
     }
 
     private void StopActivePowerUp()
     {
-        if (_activePowerUp != null)
+        if (ActivePowerUp != null)
         {
-            _activePowerUp.Stop();
-            _activePowerUp = null;
+            ActivePowerUp.Stop();
+            ActivePowerUp = null;
         }
     }
 
