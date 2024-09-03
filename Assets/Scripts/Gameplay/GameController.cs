@@ -72,9 +72,7 @@ public class GameController : MonoSingleton<GameController>
         var level = LevelLoader.Load(LevelIndex);
         levelGrid.Initialize(level.Grid);
         _allowedPowerUps = level.AllowedPowerUps;
-        Attach();
-        StopActivePowerUp();
-        ClearAllPowerUps();
+        ResetLevel();
         CurrentState = State.LevelStarting;
 
         await Task.Delay(2000);
@@ -91,7 +89,14 @@ public class GameController : MonoSingleton<GameController>
         }
     }
 
-    private void Attach()
+    private void ResetLevel()
+    {
+        ResetBalls();
+        StopActivePowerUp();
+        ClearAllPowerUps();
+    }
+
+    private void ResetBalls()
     {
         var allBalls = FindObjectsByType<Ball>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         var ball = allBalls[0];
@@ -155,7 +160,7 @@ public class GameController : MonoSingleton<GameController>
         }
         else
         {
-            Attach();
+            ResetLevel();
             ClearAllPowerUps();
         }
     }

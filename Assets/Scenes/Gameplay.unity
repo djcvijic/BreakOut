@@ -1220,6 +1220,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shape: {fileID: 1101289381}
   speed: 5
+  meshRenderer: {fileID: 1101289383}
+  fireMaterial: {fileID: 2100000, guid: fbf71186807494d90955dcd5e2776fd6, type: 2}
 --- !u!50 &817927673
 Rigidbody2D:
   serializedVersion: 4

@@ -7,9 +7,28 @@ public class Ball : MonoBehaviour
 {
     [SerializeField] private Transform shape;
     [SerializeField] private float speed = 1f;
+    [SerializeField] private MeshRenderer meshRenderer;
+    [SerializeField] private Material fireMaterial;
 
     private bool _attached;
     private Vector3 _currentVelocity;
+    private Material _defaultMaterial;
+    private bool _isOnFire;
+
+    public bool IsOnFire
+    {
+        get => _isOnFire;
+        set
+        {
+            _isOnFire = value;
+            meshRenderer.material = _isOnFire ? fireMaterial : _defaultMaterial;
+        }
+    }
+
+    private void Start()
+    {
+        _defaultMaterial = meshRenderer.material;
+    }
 
     public void Attach()
     {
@@ -25,8 +44,8 @@ public class Ball : MonoBehaviour
     private void SetRandomAngle()
     {
         var random = new Random();
-        var randomAngle = Mathf.PI/2 * (0.5f + (float)random.NextDouble());
-        randomAngle += randomAngle > Mathf.PI/2 ? Mathf.PI/12 : -Mathf.PI/12;
+        var randomAngle = Mathf.PI / 2 * (0.5f + (float)random.NextDouble());
+        randomAngle += randomAngle > Mathf.PI / 2 ? Mathf.PI / 12 : -Mathf.PI / 12;
         var angleVector = new Vector3(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle), 0f);
         _currentVelocity = speed * angleVector;
     }
@@ -88,7 +107,7 @@ public class Ball : MonoBehaviour
         if (paddle != null)
         {
             if (_currentVelocity.y > 0) return;
-            
+
             SetRandomAngle();
             return;
         }
@@ -114,11 +133,15 @@ public class Ball : MonoBehaviour
 
     private void ReflectX()
     {
+        if (_isOnFire) return;
+
         _currentVelocity = new Vector3(-_currentVelocity.x, _currentVelocity.y, _currentVelocity.z);
     }
 
     private void ReflectY()
     {
+        if (_isOnFire) return;
+
         _currentVelocity = new Vector3(_currentVelocity.x, -_currentVelocity.y, _currentVelocity.z);
     }
 }
