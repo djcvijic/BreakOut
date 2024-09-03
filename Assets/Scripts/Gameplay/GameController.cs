@@ -21,10 +21,10 @@ public class GameController : MonoSingleton<GameController>
         GameOver
     }
 
-    private Paddle _paddle;
     private List<PowerUpScriptable> _allowedPowerUps;
     private PowerUpScriptable _activePowerUp;
 
+    public Paddle Paddle { get; private set; }
     public State CurrentState { get; private set; }
     public int CurrentLives { get; private set; }
     public int CurrentScore { get; private set; }
@@ -56,7 +56,7 @@ public class GameController : MonoSingleton<GameController>
     {
         base.OnAwake();
 
-        _paddle = FindAnyObjectByType<Paddle>(FindObjectsInactive.Exclude);
+        Paddle = FindAnyObjectByType<Paddle>(FindObjectsInactive.Exclude);
         StartGame();
     }
 
@@ -101,7 +101,7 @@ public class GameController : MonoSingleton<GameController>
         var allBalls = FindObjectsByType<Ball>(FindObjectsInactive.Include, FindObjectsSortMode.None);
         var ball = allBalls[0];
         ball.gameObject.SetActive(true);
-        _paddle.Attach(ball);
+        Paddle.Attach(ball);
 
         // leave the first ball alive, clear the rest
         for (int i = 1; i < allBalls.Length; i++)

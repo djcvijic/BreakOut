@@ -2,12 +2,13 @@ using UnityEngine;
 
 public class PlayerInputHandler : MonoSingleton<PlayerInputHandler>
 {
+    public bool GunAction { get; private set; }
     public bool PrimaryAction { get; private set; }
-
     public float Direction { get; private set; }
 
     private void Update()
     {
+        GunAction = Input.GetButton("Fire2");
         PrimaryAction = Input.GetButton("Fire1");
 
         var horizontal = Input.GetAxisRaw("Horizontal");

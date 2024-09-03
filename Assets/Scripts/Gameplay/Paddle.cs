@@ -4,9 +4,13 @@ public class Paddle : MonoBehaviour
 {
     [SerializeField] private Transform shape;
     [SerializeField] private float moveSpeed = 1f;
+    [SerializeField] private float gunCoolDown = 0.2f;
 
     private Vector3? _attachedBallOffset;
     private Ball _attachedBall;
+    private float _gunCooldownRemaining;
+
+    public bool HasAGun { get; set; }
 
     public Transform Shape => shape;
 
@@ -25,6 +29,17 @@ public class Paddle : MonoBehaviour
         Fire();
         Move();
         MoveAttachedBall();
+        UseGun();
+    }
+
+    private void UseGun()
+    {
+        _gunCooldownRemaining -= Time.deltaTime;
+
+        if (!HasAGun || !PlayerInputHandler.Instance.GunAction || _gunCooldownRemaining > 0) return;
+
+        _gunCooldownRemaining = gunCoolDown;
+        Bullet.SpawnAt(shape.position);
     }
 
     private void Fire()
