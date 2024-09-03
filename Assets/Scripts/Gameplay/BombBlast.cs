@@ -19,7 +19,7 @@ public class BombBlast : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (GameController.Instance.CurrentState != GameController.State.Playing) return;
+        if (Gameplay.Instance.CurrentState != Gameplay.State.Playing) return;
 
         var brick = other.GetComponentInParent<Brick>();
         if (brick != null)

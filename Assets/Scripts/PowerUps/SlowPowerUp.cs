@@ -14,7 +14,7 @@ public class SlowPowerUp : PowerUpScriptable
 
     protected override void Run()
     {
-        _ball = GameController.Instance.AnyBall;
+        _ball = Gameplay.Instance.AnyBall;
         _originalSpeed = _ball.CurrentVelocity.magnitude;
         _ball.CurrentVelocity *= speedMultiplier;
     }

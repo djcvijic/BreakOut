@@ -22,7 +22,7 @@ public class Bullet : MonoBehaviour
 
     private void Update()
     {
-        if (GameController.Instance.CurrentState != GameController.State.Playing) return;
+        if (Gameplay.Instance.CurrentState != Gameplay.State.Playing) return;
 
         transform.localPosition += speed * Time.deltaTime * Vector3.up;
         if (transform.position.y > GameBounds.Instance.BoundsTransform.lossyScale.y / 2)
@@ -33,7 +33,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (GameController.Instance.CurrentState != GameController.State.Playing) return;
+        if (Gameplay.Instance.CurrentState != Gameplay.State.Playing) return;
 
         var brick = other.GetComponentInParent<Brick>();
         if (brick != null)

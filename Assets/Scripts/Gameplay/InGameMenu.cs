@@ -27,15 +27,15 @@ public class InGameMenu : MonoBehaviour
 
     private void Update()
     {
-        switch (GameController.Instance.CurrentState)
+        switch (Gameplay.Instance.CurrentState)
         {
-            case GameController.State.LevelStarting:
+            case Gameplay.State.LevelStarting:
                 LevelStarting();
                 return;
-            case GameController.State.LevelComplete:
+            case Gameplay.State.LevelComplete:
                 LevelComplete();
                 return;
-            case GameController.State.GameOver:
+            case Gameplay.State.GameOver:
                 GameOver();
                 return;
         }
@@ -47,21 +47,21 @@ public class InGameMenu : MonoBehaviour
         }
 
         levelNumberField.text = $"LEVEL {Meta.LevelIndex + 1}";
-        if (GameController.Instance.PowerUpSecondsRemaining > 0)
+        if (Gameplay.Instance.PowerUpSecondsRemaining > 0)
         {
             powerUpTimerField.gameObject.SetActive(true);
             powerUpTimerField.text =
-                $"{GameController.Instance.ActivePowerUp.Name}: {GameController.Instance.PowerUpSecondsRemaining}";
+                $"{Gameplay.Instance.ActivePowerUp.Name}: {Gameplay.Instance.PowerUpSecondsRemaining}";
         }
         else
         {
             powerUpTimerField.gameObject.SetActive(false);
         }
 
-        livesField.text = $"LIVES: {new string('\u2665', GameController.Instance.CurrentLives)}";
-        scoreField.text = $"SCORE: {GameController.Instance.CurrentScore}";
+        livesField.text = $"LIVES: {new string('\u2665', Gameplay.Instance.CurrentLives)}";
+        scoreField.text = $"SCORE: {Gameplay.Instance.CurrentScore}";
 
-        if (GameController.Instance.CurrentState == GameController.State.Playing)
+        if (Gameplay.Instance.CurrentState == Gameplay.State.Playing)
         {
             overlay.SetActive(false);
         }
@@ -70,7 +70,7 @@ public class InGameMenu : MonoBehaviour
     private void LevelStarting()
     {
         overlay.SetActive(true);
-        overlayTitle.text = $"LEVEL {GameController.Instance.LevelIndex + 1}\nGET READY";
+        overlayTitle.text = $"LEVEL {Gameplay.Instance.LevelIndex + 1}\nGET READY";
         unPauseButton.gameObject.SetActive(false);
         restartButton.gameObject.SetActive(false);
         quitButton.gameObject.SetActive(false);
@@ -79,7 +79,7 @@ public class InGameMenu : MonoBehaviour
     private void LevelComplete()
     {
         overlay.SetActive(true);
-        overlayTitle.text = $"LEVEL {GameController.Instance.LevelIndex + 1}\nCOMPLETE";
+        overlayTitle.text = $"LEVEL {Gameplay.Instance.LevelIndex + 1}\nCOMPLETE";
         unPauseButton.gameObject.SetActive(true);
         restartButton.gameObject.SetActive(false);
         quitButton.gameObject.SetActive(false);
@@ -89,7 +89,7 @@ public class InGameMenu : MonoBehaviour
     {
         overlay.SetActive(true);
         overlayTitle.text =
-            $"GAME OVER\nLEVEL: {GameController.Instance.LevelIndex + 1}\nSCORE: {GameController.Instance.CurrentScore}";
+            $"GAME OVER\nLEVEL: {Gameplay.Instance.LevelIndex + 1}\nSCORE: {Gameplay.Instance.CurrentScore}";
         unPauseButton.gameObject.SetActive(false);
         restartButton.gameObject.SetActive(true);
         quitButton.gameObject.SetActive(true);
@@ -97,9 +97,9 @@ public class InGameMenu : MonoBehaviour
 
     private void Pause()
     {
-        if (GameController.Instance.CurrentState != GameController.State.Playing) return;
+        if (Gameplay.Instance.CurrentState != Gameplay.State.Playing) return;
 
-        GameController.Instance.Pause();
+        Gameplay.Instance.Pause();
         overlay.SetActive(true);
         overlayTitle.text = "PAUSED";
         unPauseButton.gameObject.SetActive(true);
@@ -109,22 +109,22 @@ public class InGameMenu : MonoBehaviour
 
     private void UnPauseOrNextLevel()
     {
-        switch (GameController.Instance.CurrentState)
+        switch (Gameplay.Instance.CurrentState)
         {
-            case GameController.State.Paused:
+            case Gameplay.State.Paused:
                 overlay.SetActive(false);
-                GameController.Instance.UnPause();
+                Gameplay.Instance.UnPause();
                 break;
-            case GameController.State.LevelComplete:
+            case Gameplay.State.LevelComplete:
                 overlay.SetActive(false);
-                GameController.Instance.NextLevel();
+                Gameplay.Instance.NextLevel();
                 break;
         }
     }
 
     private static void Restart()
     {
-        if (GameController.Instance.CurrentState == GameController.State.GameOver)
+        if (Gameplay.Instance.CurrentState == Gameplay.State.GameOver)
         {
             Meta.LevelIndex = 0;
         }

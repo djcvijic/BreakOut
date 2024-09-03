@@ -6,7 +6,7 @@ using UnityEngine;
 using Util;
 using Random = System.Random;
 
-public class GameController : MonoSingleton<GameController>
+public class Gameplay : MonoSingleton<Gameplay>
 {
     [SerializeField] private int maxLives = 3;
     [SerializeField] private LevelGridView levelGrid;

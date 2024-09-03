@@ -11,7 +11,7 @@ public class ClonePowerUp : PowerUpScriptable
 
     protected override void Run()
     {
-        var ball = GameController.Instance.AnyBall;
+        var ball = Gameplay.Instance.AnyBall;
         for (var i = 0; i < BallsToAdd; i++)
         {
             Instantiate(ball).UnAttach();

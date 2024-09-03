@@ -11,7 +11,7 @@ public class FireballPowerUp : PowerUpScriptable
 
     protected override void Run()
     {
-        _ball = GameController.Instance.AnyBall;
+        _ball = Gameplay.Instance.AnyBall;
         _ball.IsOnFire = true;
     }
 

@@ -24,7 +24,7 @@ public class Paddle : MonoBehaviour
 
     private void Update()
     {
-        if (GameController.Instance.CurrentState != GameController.State.Playing) return;
+        if (Gameplay.Instance.CurrentState != Gameplay.State.Playing) return;
 
         Fire();
         Move();

@@ -16,7 +16,7 @@ public class PowerUp : MonoBehaviour
 
     private void Update()
     {
-        if (GameController.Instance.CurrentState != GameController.State.Playing) return;
+        if (Gameplay.Instance.CurrentState != Gameplay.State.Playing) return;
 
         transform.localPosition += fallSpeed * Time.deltaTime * Vector3.down;
         transform.rotation *= Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, Vector3.forward);
@@ -28,7 +28,7 @@ public class PowerUp : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (GameController.Instance.CurrentState != GameController.State.Playing) return;
+        if (Gameplay.Instance.CurrentState != Gameplay.State.Playing) return;
 
         var paddle = other.GetComponentInParent<Paddle>();
         if (paddle != null)

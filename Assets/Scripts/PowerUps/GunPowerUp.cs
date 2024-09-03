@@ -9,11 +9,11 @@ public class GunPowerUp : PowerUpScriptable
 
     protected override void Run()
     {
-        GameController.Instance.Paddle.HasAGun = true;
+        Gameplay.Instance.Paddle.HasAGun = true;
     }
 
     protected override void OnEnded()
     {
-        GameController.Instance.Paddle.HasAGun = false;
+        Gameplay.Instance.Paddle.HasAGun = false;
     }
 }

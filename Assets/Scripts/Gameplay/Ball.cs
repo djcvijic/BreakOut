@@ -54,7 +54,7 @@ public class Ball : MonoBehaviour
 
     private void Update()
     {
-        if (GameController.Instance.CurrentState != GameController.State.Playing) return;
+        if (Gameplay.Instance.CurrentState != Gameplay.State.Playing) return;
 
         Move();
     }
@@ -103,7 +103,7 @@ public class Ball : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (GameController.Instance.CurrentState != GameController.State.Playing) return;
+        if (Gameplay.Instance.CurrentState != Gameplay.State.Playing) return;
 
         var paddle = other.GetComponentInParent<Paddle>();
         if (paddle != null)
