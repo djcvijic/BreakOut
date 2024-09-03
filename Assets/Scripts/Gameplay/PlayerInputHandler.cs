@@ -5,6 +5,7 @@ public class PlayerInputHandler : MonoSingleton<PlayerInputHandler>
     public bool GunAction { get; private set; }
     public bool PrimaryAction { get; private set; }
     public float Direction { get; private set; }
+    public bool IsReversed { get; set; }
 
     private void Update()
     {
@@ -19,5 +20,7 @@ public class PlayerInputHandler : MonoSingleton<PlayerInputHandler>
         if (inputLeft && !inputRight) Direction = Mathf.Min(horizontal, mouseX);
         else if (inputRight && !inputLeft) Direction = Mathf.Max(horizontal, mouseX);
         else Direction = 0f;
+
+        if (IsReversed) Direction = -Direction;
     }
 }
