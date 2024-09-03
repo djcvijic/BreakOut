@@ -21,11 +21,7 @@ public class Brick : MonoBehaviour
         _currentHealth -= 1;
         if (_currentHealth <= 0)
         {
-            gameObject.SetActive(false);
-            Notifier.Instance.Notify(new BrickDestroyedMessage(
-                _scriptable.ScoreContribution,
-                _scriptable.PowerUpProbability,
-                transform.position));
+            Die();
             return;
         }
 
@@ -35,6 +31,16 @@ public class Brick : MonoBehaviour
         {
             Teleport();
         }
+    }
+
+    public void Die()
+    {
+        _currentHealth = 0;
+        gameObject.SetActive(false);
+        Notifier.Instance.Notify(new BrickDestroyedMessage(
+            _scriptable.ScoreContribution,
+            _scriptable.PowerUpProbability,
+            transform.position));
     }
 
     public void Initialize(BrickScriptable scriptable)

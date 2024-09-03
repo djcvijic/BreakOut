@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: eba059040359443dda1335bb2d2779fc, type: 2}
+  - {fileID: 2100000, guid: d5470f78937f5424b9fd280f2f365c65, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -93,10 +93,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4110594708883624657}
-  - component: {fileID: 1428329654881640932}
   - component: {fileID: 156581792397200769}
+  - component: {fileID: 788143911249463815}
   m_Layer: 0
-  m_Name: Ball
+  m_Name: Blast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118,22 +118,6 @@ Transform:
   - {fileID: 321534575013595636}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1428329654881640932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1710057228027567387}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c76b0fc1e71f14130947de878a2e6ac7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shape: {fileID: 321534575013595636}
-  speed: 5
-  meshRenderer: {fileID: 0}
-  fireMaterial: {fileID: 0}
 --- !u!50 &156581792397200769
 Rigidbody2D:
   serializedVersion: 4
@@ -161,6 +145,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &788143911249463815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710057228027567387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ab0dcad45434811b96b685a54c6ce6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blastDuration: 0.2
 --- !u!1 &8987153664544655352
 GameObject:
   m_ObjectHideFlags: 0
