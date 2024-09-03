@@ -11,9 +11,10 @@ public class Ball : MonoBehaviour
     [SerializeField] private Material fireMaterial;
 
     private bool _attached;
-    private Vector3 _currentVelocity;
     private Material _defaultMaterial;
     private bool _isOnFire;
+
+    public Vector3 CurrentVelocity { get; set; }
 
     public bool IsOnFire
     {
@@ -38,6 +39,7 @@ public class Ball : MonoBehaviour
     public void UnAttach()
     {
         _attached = false;
+        CurrentVelocity = speed * Vector3.up;
         SetRandomAngle();
     }
 
@@ -47,7 +49,7 @@ public class Ball : MonoBehaviour
         var randomAngle = Mathf.PI / 2 * (0.5f + (float)random.NextDouble());
         randomAngle += randomAngle > Mathf.PI / 2 ? Mathf.PI / 12 : -Mathf.PI / 12;
         var angleVector = new Vector3(Mathf.Cos(randomAngle), Mathf.Sin(randomAngle), 0f);
-        _currentVelocity = speed * angleVector;
+        CurrentVelocity = CurrentVelocity.magnitude * angleVector.normalized;
     }
 
     private void Update()
@@ -62,8 +64,8 @@ public class Ball : MonoBehaviour
         if (_attached) return;
 
         var myTransform = transform;
-        var newPosition = myTransform.localPosition + _currentVelocity * Time.deltaTime;
-        (myTransform.localPosition, _currentVelocity) = ClampWithGameBounds(newPosition);
+        var newPosition = myTransform.localPosition + CurrentVelocity * Time.deltaTime;
+        (myTransform.localPosition, CurrentVelocity) = ClampWithGameBounds(newPosition);
     }
 
     private (Vector3 position, Vector3 velocity) ClampWithGameBounds(Vector3 position)
@@ -76,21 +78,21 @@ public class Ball : MonoBehaviour
         var maxX = boundsPosition.x + 0.5f * (boundsScale.x - myScale.x);
         var minY = boundsPosition.y - 0.5f * (boundsScale.y - myScale.y);
         var maxY = boundsPosition.y + 0.5f * (boundsScale.y - myScale.y);
-        var velocity = _currentVelocity;
+        var velocity = CurrentVelocity;
 
-        if (position.x < minX && _currentVelocity.x < 0 || position.x > maxX && _currentVelocity.x > 0)
+        if (position.x < minX && CurrentVelocity.x < 0 || position.x > maxX && CurrentVelocity.x > 0)
         {
             position = new Vector3(Mathf.Clamp(position.x, minX, maxX), position.y, position.z);
-            velocity = new Vector3(-_currentVelocity.x, _currentVelocity.y, _currentVelocity.z);
+            velocity = new Vector3(-CurrentVelocity.x, CurrentVelocity.y, CurrentVelocity.z);
         }
 
-        if (position.y > maxY && _currentVelocity.y > 0)
+        if (position.y > maxY && CurrentVelocity.y > 0)
         {
             position = new Vector3(position.x, Mathf.Clamp(position.y, minY, maxY), position.z);
-            velocity = new Vector3(_currentVelocity.x, -_currentVelocity.y, _currentVelocity.z);
+            velocity = new Vector3(CurrentVelocity.x, -CurrentVelocity.y, CurrentVelocity.z);
         }
 
-        if (position.y < minY && _currentVelocity.y < 0)
+        if (position.y < minY && CurrentVelocity.y < 0)
         {
             gameObject.SetActive(false);
             Notifier.Instance.Notify(new BallDestroyedMessage());
@@ -106,7 +108,7 @@ public class Ball : MonoBehaviour
         var paddle = other.GetComponentInParent<Paddle>();
         if (paddle != null)
         {
-            if (_currentVelocity.y > 0) return;
+            if (CurrentVelocity.y > 0) return;
 
             SetRandomAngle();
             return;
@@ -116,12 +118,12 @@ public class Ball : MonoBehaviour
         if (brick != null)
         {
             var direction = brick.transform.position - transform.position;
-            if (direction.y > 0 && _currentVelocity.y > 0 || direction.y < 0 && _currentVelocity.y < 0)
+            if (direction.y > 0 && CurrentVelocity.y > 0 || direction.y < 0 && CurrentVelocity.y < 0)
             {
                 brick.GetHit();
                 ReflectY();
             }
-            else if (direction.x > 0 && _currentVelocity.x > 0 || direction.x < 0 && _currentVelocity.x < 0)
+            else if (direction.x > 0 && CurrentVelocity.x > 0 || direction.x < 0 && CurrentVelocity.x < 0)
             {
                 brick.GetHit();
                 ReflectX();
@@ -135,13 +137,13 @@ public class Ball : MonoBehaviour
     {
         if (_isOnFire) return;
 
-        _currentVelocity = new Vector3(-_currentVelocity.x, _currentVelocity.y, _currentVelocity.z);
+        CurrentVelocity = new Vector3(-CurrentVelocity.x, CurrentVelocity.y, CurrentVelocity.z);
     }
 
     private void ReflectY()
     {
         if (_isOnFire) return;
 
-        _currentVelocity = new Vector3(_currentVelocity.x, -_currentVelocity.y, _currentVelocity.z);
+        CurrentVelocity = new Vector3(CurrentVelocity.x, -CurrentVelocity.y, CurrentVelocity.z);
     }
 }
