@@ -103,7 +103,10 @@ crashlytics-build.properties
 [Bb]in/
 [Oo]bj/
 _UpgradeReport_Files/
-[Pp]ackages/
+[Pp]ackages/*
+
+!Packages/manifest.json
+!Packages/packages-lock.json
 
 Thumbs.db
 Desktop.ini
